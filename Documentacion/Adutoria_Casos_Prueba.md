@@ -2,9 +2,9 @@
 
 **Proyecto:** Sistema Básico de Administración de Configuración (SBAC)
 
-## 1. Auditoría del Código (Análisis P1 y P2)
+## 1. Auditoría del Código
 
-Como QA Lead, he analizado exhaustivamente la lógica del backend implementada en `core.py` y el enrutador de comandos en `sbac.py`.
+He analizado exhaustivamente la lógica del backend implementada en `core.py` y el enrutador de comandos en `sbac.py`.
 
 ### 1.1 Inconsistencias Críticas y Riesgos de Configuración
 
