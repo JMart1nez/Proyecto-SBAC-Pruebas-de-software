@@ -14,34 +14,36 @@ Para el diseño sistemático y eficiente de los casos de prueba del CLI SBAC, se
 
 A continuación, se detallan los 27 Casos de Prueba requeridos, organizados en sus 5 áreas funcionales principales.
 
-| ID | Título / Descripción | Condiciones Previas | Datos de Entrada | Pasos de Ejecución | Resultados Esperados | Resultados Reales | Estado |
+
+| ID | Título / Descripción | Condiciones Previas | Entradas | Pasos de Ejecución | Resultados Esperados | Resultados Reales | Estado |
 |:---|:---|:---|:---|:---|:---|:---|:---|
-| **GR-01** | Inicialización exitosa de repositorio vacío | Directorio vacío sin estructura SBAC previa | Ninguno | 1. Ejecutar `sbac init` | Se crea estructura interna oculta y se muestra msj de éxito | | |
-| **GR-02** | Doble inicialización de repositorio | Directorio ya posee un repositorio SBAC válido | Ninguno | 1. Ejecutar `sbac init` | Error o advertencia de repositorio existente. No corrompe datos actuales | | |
-| **GR-03** | Visualización de estado sin cambios | Repositorio recién inicializado, sin archivos | Ninguno | 1. Ejecutar `sbac status` | Mensaje indicando directorio limpio / sin cambios | | |
-| **GR-04** | Visualización de estado con no rastreados | Repo inicializado, 1 archivo nuevo en directorio | Archivo `file1.txt` | 1. Crear archivo<br>2. Ejecutar `sbac status` | Archivo listado en sección de "Archivos no rastreados" | | |
-| **GR-05** | Visualización de historial inicial | Repositorio sin commits realizados | Ninguno | 1. Ejecutar `sbac history` | Mensaje indicando que el historial está vacío | | |
-| **GR-06** | Consulta de ayuda principal | Sistema con CLI SBAC instalado | Ninguno | 1. Ejecutar `sbac --help` | Lista detallada de comandos, sintaxis y uso | | |
-| **CV-01** | Agregar archivo individual válido | Repo con archivo nuevo | `f1.txt` | 1. Ejecutar `sbac add f1.txt` | Archivo pasa exitosamente al área de preparación (index) | | |
-| **CV-02** | Agregar múltiples archivos simultáneamente | Repo con varios archivos nuevos/modificados | `f1.txt`, `f2.txt` | 1. Ejecutar `sbac add f1.txt f2.txt` | Todos los archivos indicados se agregan al index | | |
-| **CV-03** | Agregar todos los archivos del directorio | Archivos en estado untracked/modificados | `.` (Punto) | 1. Ejecutar `sbac add .` | Todo archivo no ignorado se agrega al index masivamente | | |
-| **CV-04** | Confirmar cambios con mensaje estándar | Archivos preparados en el index | `-m "Inicial"` | 1. Ejecutar `sbac commit -m "Inicial"` | Commit creado con ID único. Se limpia el index | | |
-| **CV-05** | Confirmar cambios con msj largo (Límite) | Archivos preparados en el index | Cadena de texto > 255 caracteres | 1. Ejecutar `sbac commit -m "[TEXTO_LARGO]"` | El sistema acepta el límite máximo sin fallar o truncando | | |
-| **CV-06** | Ver historial tras múltiples commits | Repo con 2 o más commits históricos | Ninguno | 1. Ejecutar `sbac history` | Lista ordenada cronológicamente de commits con su ID y mensaje | | |
-| **CV-07** | Estado post-modificación de archivo | Archivo previamente rastreado es alterado | Archivo modificado | 1. Modificar archivo<br>2. Ejecutar `sbac status` | Archivo se lista en "Cambios no preparados para confirmación" | | |
-| **LB-01** | Crear una línea base exitosa | Repo con historial de commits válido | `v1.0` | 1. Ejecutar `sbac baseline v1.0` | Etiqueta `v1.0` se crea apuntando al último commit (HEAD) | | |
-| **LB-02** | Crear línea base con nombre duplicado | Línea base `v1.0` ya existe | `v1.0` | 1. Ejecutar `sbac baseline v1.0` | Error indicando que el nombre ya está en uso. No se sobrescribe | | |
-| **LB-03** | Restaurar a un commit previo exitoso | Historial con múltiples commits | `<ID_COMMIT>` | 1. Ejecutar `sbac checkout <ID_COMMIT>` | Los archivos locales se revierten al estado exacto del commit indicado | | |
-| **LB-04** | Restaurar código a línea base existente | Línea base `v1.0` previamente creada | `v1.0` | 1. Ejecutar `sbac checkout v1.0` | Los archivos locales se revierten al estado de la baseline indicada | | |
-| **CP-01** | Comparar directorio local vs index | Archivo rastreado fue modificado localmente | Ninguno | 1. Ejecutar `sbac diff` | Imprime diferencias (+/-) del archivo frente a su copia en el index | | |
-| **CP-02** | Comparar directorio local vs último commit | Archivo modificado localmente | `HEAD` | 1. Ejecutar `sbac diff HEAD` | Imprime diferencias entre versión local y último snapshot (HEAD) | | |
-| **CP-03** | Comparar entre dos commits específicos | Existen al menos 2 commits en historial | `<ID_1>`, `<ID_2>` | 1. Ejecutar `sbac diff <ID_1> <ID_2>` | Imprime diferencias consolidadas entre ambos snapshots | | |
-| **CP-04** | Comparar cuando no hay cambios | Directorio completamente limpio | Ninguno | 1. Ejecutar `sbac diff` | No muestra salida, o muestra mensaje "No hay diferencias" | | |
-| **CP-05** | Comparar con archivo no rastreado | Archivo nuevo untracked presente | Ninguno | 1. Ejecutar `sbac diff` | Archivo nuevo se ignora, no hay volcado de contenido difuso | | |
-| **ME-01** | Comando en directorio no inicializado | Directorio sin estructura SBAC oculta | Ninguno | 1. Ejecutar `sbac status` | Error fatal: "El directorio actual no es un repositorio SBAC" | | |
-| **ME-02** | Intentar agregar archivo inexistente | Repo inicializado correctamente | `fake.txt` | 1. Ejecutar `sbac add fake.txt` | Error: "Archivo o directorio no encontrado". Index no se altera | | |
-| **ME-03** | Commit con omisión de argumentos obligatorios | Cambios preparados en index | Ninguno | 1. Ejecutar `sbac commit` | Error de sintaxis: Falta el argumento de mensaje (`-m`) | | |
-| **ME-04** | Checkout hacia referencia inexistente | Repo inicializado | `tag_invalido` | 1. Ejecutar `sbac checkout tag_invalido` | Error: "Referencia de commit o línea base no encontrada" | | |
-| **ME-05** | Ejecución sobre repositorio corrupto | Directorio interno crítico de SBAC borrado | Ninguno | 1. Eliminar dir interno.<br>2. Ejecutar `sbac status` | El sistema captura la excepción y avisa de repositorio corrupto | | |
+| **GR-01** | Inicializar repositorio vacío | Directorio sin `.sbac` | Ninguno | 1. `sbac init` | Mensaje: "Repositorio SBAC inicializado correctamente". Se crean carpetas ocultas. | | |
+| **GR-02** | Doble inicialización | Directorio con `.sbac` existente | Ninguno | 1. `sbac init` | Mensaje: "El repositorio ya está inicializado." | | |
+| **GR-03** | Estado sin cambios | Repo inicializado, sin archivos añadidos | Ninguno | 1. `sbac status` | Mensaje: "No hay archivos nuevos pendientes de commit." | | |
+| **GR-04** | Estado con archivos en index | Repo inicializado, archivo en index | `file1.txt` | 1. `sbac add file1.txt`<br>2. `sbac status` | El archivo se muestra como `[Pendiente] file1.txt` | | |
+| **GR-05** | Historial inicial vacío | Repo sin commits | Ninguno | 1. `sbac history` | Mensaje: "Aún no se han realizado confirmaciones (commits)." | | |
+| **GR-06** | Consulta de ayuda principal | CLI instalada | Ninguno | 1. `sbac --help` | Despliega lista de comandos y sintaxis. | | |
+| **CV-01** | Agregar archivo individual | Archivo existe localmente | `file.txt` | 1. `sbac add file.txt` | Mensaje: "'file.txt' añadido al seguimiento." | | |
+| **CV-02** | Agregar archivo ya rastreado | Archivo ya está en el index | `file.txt` | 1. `sbac add file.txt`<br>2. `sbac add file.txt` | Mensaje: "El archivo ya está siendo rastreado." | | |
+| **CV-03** | Intentar agregar directorio | Directorio `src/` existe | `src/` | 1. `sbac add src/` | Error: "El seguimiento de directorios completos no está soportado en esta versión." | | |
+| **CV-04** | Commit exitoso (Happy Path) | Archivos en el index | `-m "Fix"` | 1. `sbac commit "Fix"` | Mensaje de éxito con ID del commit. Index se vacía. | | |
+| **CV-05** | Commit sin archivos en index | Index vacío | `-m "Vacio"`| 1. `sbac commit "Vacio"` | Mensaje: "Nada para confirmar. Usa 'sbac add'..." | | |
+| **CV-06** | Ver historial tras commits | Historial con datos | Ninguno | 1. `sbac history` | Lista de commits cronológica con IDs y mensajes. | | |
+| **CV-07** | Colisión de nombres en commit | Archivos homónimos en subcarpetas | `a/f.txt`, `b/f.txt` | 1. `sbac add a/f.txt`<br>2. `sbac add b/f.txt`<br>3. `sbac commit "Test"` | **Fallo esperado (Bug Arquitectónico):** Solo se guarda uno de los `f.txt` en la carpeta del commit. | | |
+| **LB-01** | Crear línea base exitosa | Commit en HEAD | `v1.0` | 1. `sbac baseline v1.0` | Mensaje: "Línea base 'v1.0' vinculada..." | | |
+| **LB-02** | Crear baseline sin commits | Repositorio vacío | `v1.0` | 1. `sbac baseline v1.0` | Error: "No puedes definir una línea base porque no se ha creado ningún commit..." | | |
+| **LB-03** | Checkout a commit exitoso | Commit ID válido en historial | `<ID>` | 1. `sbac checkout <ID>` | Archivos se restauran a su estado. Mensaje de éxito. | | |
+| **LB-04** | Checkout a línea base | Línea base `v1.0` válida | `v1.0` | 1. `sbac checkout v1.0` | Archivos se restauran al commit apuntado por la baseline. | | |
+| **CP-01** | Diff entre dos commits válidos | 2 commits existentes | `<ID1> <ID2>` | 1. `sbac diff <ID1> <ID2>` | Imprime diferencias (+/-) de los archivos comunes. | | |
+| **CP-02** | Diff con versión inexistente | ID erróneo | `ID1 fake_id` | 1. `sbac diff ID1 fake_id` | Error: "Uno o ambos identificadores de versión no existen..." | | |
+| **CP-03** | Diff sin archivos comunes | Commits con archivos distintos | `<ID1> <ID2>` | 1. `sbac diff <ID1> <ID2>` | Mensaje: "No se encontraron archivos comunes entre ambas versiones para comparar." | | |
+| **CP-04** | Diff de archivos sin cambios | Commits idénticos | `<ID1> <ID1>` | 1. `sbac diff <ID1> <ID1>` | Mensaje indicando que el archivo no presenta cambios. | | |
+| **CP-05** | Listar baselines vacío | Sin baselines | Ninguno | 1. `sbac list-baselines`| Mensaje: "No se han registrado líneas base en este repositorio." | | |
+| **ME-01** | Ejecutar status sin init | No hay `.sbac` | Ninguno | 1. `sbac status` | Error: "El repositorio SBAC no está inicializado..." | | |
+| **ME-02** | Agregar archivo inexistente | Archivo no existe | `fake.py` | 1. `sbac add fake.py` | Error: "El archivo 'fake.py' no existe." | | |
+| **ME-03** | Checkout inexistente | Referencia inválida | `fake_tag` | 1. `sbac checkout fake_tag`| Error: "La versión o línea base 'fake_tag' no existe." | | |
+| **ME-04** | Commit sin mensaje | Faltan argumentos CLI | Ninguno | 1. `sbac commit` | Error del `argparse`: Falta el argumento de mensaje. | | |
+| **ME-05** | Diff de un solo argumento | Falta un argumento CLI | `v1.0` | 1. `sbac diff v1.0` | Error del `argparse`: the following arguments are required. | | |
+
 
 ---
