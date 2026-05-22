@@ -23,4 +23,4 @@ He detectado divergencias graves entre el diseño conceptual y la implementació
 > **Riesgo 3: Restauración Parcial en `sbac checkout` (Estado Sucio)**
 > *   *Código (P2):* La función `restaurar_version` copia los archivos del commit objetivo de vuelta a su `ruta_original`. Sin embargo, no elimina los archivos que el usuario haya creado *después* de ese commit. Esto deja el espacio de trabajo en un "estado sucio" (mezcla de archivos del commit antiguo y archivos nuevos no trackeados).
 
-"Los casos de prueba modificados en base a esta auditoría se encuentran actualizados en el documento de Diseño de Pruebas Iniciales
+**Nota: Los casos de prueba modificados en base a esta auditoría se encuentran actualizados en el documento de Diseño de Pruebas Iniciales**
