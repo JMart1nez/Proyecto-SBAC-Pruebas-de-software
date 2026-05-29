@@ -73,6 +73,10 @@ A continuación, se detallan los 27 Casos de Prueba ejecutados, organizados en s
 |-------------|------|-----------|-------------------|
 | INC-001 | CV-07 | Alta | Colisión de nombres — pérdida silenciosa de archivos en commit |
 | INC-002 | CP-03 | Alta | Colisión de timestamps — commits ejecutados en el mismo segundo generan IDs duplicados |
+| INC-003 | CP-03 | Media | Diff omite archivos añadidos/eliminados |
+| INC-004 | ME-01 | Media | Falso positivo en Exit Codes de errores |
+| INC-005 | LB-03 | Media | Checkout deja el directorio en estado sucio |
+| INC-006 | CV-04 | Crítica | Pérdida de archivos antiguos al hacer nuevo commit |
 
 *Ver documento `Reporte_Incidentes.md` para detalle completo de cada defecto*
 
