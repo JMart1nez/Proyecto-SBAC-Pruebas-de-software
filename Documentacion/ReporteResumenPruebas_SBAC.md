@@ -4,8 +4,9 @@
 **Identificador del Documento:** TSR-SBAC-V1.0  
 **Proyecto:** Sistema Básico de Administración de Configuración (SBAC)  
 **Fecha de ejecución:** 27 de Mayo de 2026  
-**Versión del sistema probado:** Código actualizado — commit "feat: Se añadieron funciones faltantes" (Diana-Matu)  
-**Responsable de QA:** Belen-Diaz QA Lead / Pruebas  
+**Versión del sistema probado:** Código actualizado — commit "feat: Se añadieron funciones faltantes" (@Diana-Matu)  
+**Responsable de QA:** Belen-Diaz @BelenDiaz-web QA Lead / Pruebas  
+**Responsable de documentación:** @NormaSeleneSanchez 
 **Versión del documento:** 1.0  
 
 ---
@@ -60,6 +61,18 @@ Se combinaron dos enfoques:
 ---
 
 ## 5. Ejecución de Casos de Prueba
+
+### 5.0 Matriz de Trazabilidad de Requisitos (RTM)
+
+| ID Requisito Funcional | Módulo | Caso de Prueba (IEEE 829) | Estado |
+| :--- | :--- | :--- | :--- |
+| REQ-FUNC-01 | Gestión de Repositorio | GR-01 al GR-06 | Verificado |
+| REQ-FUNC-02 | Control de Versiones | CV-01 al CV-07 | **Con Defectos** (INC-001, INC-006) |
+| REQ-FUNC-03 | Líneas Base y Checkout | LB-01 al LB-04 | **Con Defectos** (INC-005) |
+| REQ-FUNC-04 | Comparación (Diff) | CP-01 al CP-05 | **Con Defectos** (INC-003) |
+| REQ-NFR-01 | Manejo de Errores | ME-01 al ME-05 | **Con Defectos** (INC-004) |
+
+---
 
 ### 5.1 Grupo GR — Gestión de Repositorio
 
@@ -792,6 +805,9 @@ FileExistsError: [Errno 17] File exists: '.sbac/commits/vXXXXXXXXXX'
 
 **Causa raíz:** En `utils.py`, `generar_id_version()` usa `int(time.time())` con precisión de un segundo. No existe protección contra duplicados 
 **Estado:** Abierto — pendiente corrección por el equipo de desarrollo
+
+*(Nota: Durante la auditoría final se detectaron 4 incidentes críticos adicionales [INC-003, INC-004, INC-005, INC-006]. Para no extender este resumen ejecutivo, el detalle técnico, pasos de reproducción y logs de estos 4 bugs se encuentran formalmente documentados en el archivo adjunto `Reporte_Incidentes.md`).*
+
 
 ---
 
