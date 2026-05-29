@@ -48,19 +48,19 @@ El proyecto se desarrollará a lo largo de un ciclo de 4 semanas (Sprints), con 
 
 *   **Sprint 1 (Semana 1) - Planificación y Configuración Base:**
     *   **Actividades:** Definición del Plan de Pruebas, configuración del entorno de QA, diseño de pruebas para comandos iniciales (`init`, `add`).
-    *   **Responsables:** Persona 5 (QA Lead/Documentador) para el MTP; Persona 1 y Persona 2 para diseño de casos iniciales.
+    *   **Responsables:** @NormaSeleneSanchez para el MTP; @JMart1nez y @Diana-Matu para diseño de casos iniciales.
 
 *   **Sprint 2 (Semana 2) - Pruebas Funcionales Core:**
     *   **Actividades:** Ejecución de pruebas Caja Negra y Blanca para comandos centrales (`status`, `commit`, `history`). Registro de primeros incidentes.
-    *   **Responsables:** Persona 3 y Persona 4 (Ejecución y automatización de pruebas); Persona 5 (Supervisión y Logs).
+    *   **Responsables:** @BelenDiaz-web y @Super-Gabriel · he/him (Ejecución y automatización de pruebas); @NormaSeleneSanchez (Supervisión y Logs).
 
 *   **Sprint 3 (Semana 3) - Funcionalidad Avanzada y Regresión:**
     *   **Actividades:** Pruebas de funcionalidades complejas (`baseline`, `diff`, `checkout`). Primera ronda de Pruebas de Regresión sobre el Sprint 2.
-    *   **Responsables:** Persona 1, Persona 2, Persona 3, Persona 4 (Distribución de módulos avanzados).
+    *   **Responsables:**  @JMart1nez, @Diana-Matu, @BelenDiaz-web, @Super-Gabriel · he/him (Distribución de módulos avanzados).
 
 *   **Sprint 4 (Semana 4) - Estabilización y Cierre:**
     *   **Actividades:** Pruebas de Regresión finales, resolución de defectos críticos, elaboración del Reporte Resumen de Pruebas (Test Summary Report).
-    *   **Responsables:** Todo el equipo (Resolución y re-testing); Persona 5 (Consolidación de entregables y reporte final).
+    *   **Responsables:** Todo el equipo (Resolución y re-testing); @NormaSeleneSanchez (Consolidación de entregables y reporte final).
 
 ---
 
