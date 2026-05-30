@@ -2,13 +2,14 @@ import os
 import shutil
 import difflib
 import utils
+import sys
 
 def validar_repositorio(func):
     """Decorador para asegurar que el repositorio esté inicializado antes de operar."""
     def wrapper(*args, **kwargs):
         if not os.path.exists(utils.SBAC_DIR):
             print("Error: El repositorio SBAC no está inicializado. Ejecuta primero 'sbac init'.")
-            return
+            sys.exit(1) # Ahora sí lanza un error al sistema operativo (INC-004)
         return func(*args, **kwargs)
     return wrapper
 
@@ -66,8 +67,21 @@ def crear_commit(mensaje):
     
     # Guardamos los archivos rastreados mapeando su ruta original y su nombre
     archivos_guardados = {}
+
+    # Heredar archivos del commit anterior (INC-006)
+    head_anterior = utils.leer_texto(utils.HEAD_FILE)
+    if head_anterior:
+        meta_anterior = utils.leer_json(os.path.join(utils.COMMITS_DIR, head_anterior, "meta.json"), {})
+        for nombre_base, ruta_orig in meta_anterior.get("archivos", {}).items():
+            origen_viejo = os.path.join(utils.COMMITS_DIR, head_anterior, nombre_base)
+            dest_nuevo = os.path.join(commit_path, nombre_base)
+            if os.path.exists(origen_viejo):
+                shutil.copy(origen_viejo, dest_nuevo)
+                archivos_guardados[nombre_base] = ruta_orig
+
+
     for file in index:
-        nombre_base = os.path.basename(file)
+        nombre_base = file.replace("/", "_").replace("\\", "_")
         dest = os.path.join(commit_path, nombre_base)
         shutil.copy(file, dest)
         archivos_guardados[nombre_base] = file # Mantenemos la ruta original de rescate
@@ -106,6 +120,18 @@ def ver_diferencias(v1, v2):
     
     m1 = utils.leer_json(os.path.join(path1, "meta.json"))
     m2 = utils.leer_json(os.path.join(path2, "meta.json"))
+    
+    # Detectar añadidos y eliminados (INC-003)
+    archivos1 = set(m1['archivos'].keys())
+    archivos2 = set(m2['archivos'].keys())
+
+    eliminados = archivos1 - archivos2
+    añadidos = archivos2 - archivos1
+
+    for f in eliminados:
+        print(f"[-] Eliminado en la segunda versión: {m1['archivos'][f]}")
+    for f in añadidos:
+        print(f"[+] Añadido en la segunda versión: {m2['archivos'][f]}")
     
     comunes = set(m1['archivos'].keys()).intersection(set(m2['archivos'].keys()))
     
@@ -172,6 +198,14 @@ def restaurar_version(version_target):
         return
 
     meta = utils.leer_json(os.path.join(commit_path, "meta.json"))
+
+    # Limpiar el espacio de trabajo actual (INC-005)
+    head_actual = utils.leer_texto(utils.HEAD_FILE)
+    if head_actual:
+        meta_actual = utils.leer_json(os.path.join(utils.COMMITS_DIR, head_actual, "meta.json"), {})
+        for ruta_actual in meta_actual.get("archivos", {}).values():
+            if os.path.exists(ruta_actual):
+                os.remove(ruta_actual)
     
     # Restaurar cada archivo guardado a su ubicación original de trabajo
     for nombre_base, ruta_original in meta['archivos'].items():

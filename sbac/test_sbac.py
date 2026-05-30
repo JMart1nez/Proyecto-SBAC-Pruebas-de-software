@@ -193,10 +193,10 @@ class TestControlVersiones(unittest.TestCase):
 
         head = utils.leer_texto(utils.HEAD_FILE)
         commit_path = os.path.join(utils.COMMITS_DIR, head)
-        archivos_guardados = [f for f in os.listdir(commit_path) if f != "meta.json"]
+        archivos_en_commit = os.listdir(commit_path)
 
-        # Solo hay UN archivo1.txt — documenta el bug de colisión de nombres
-        self.assertEqual(archivos_guardados.count("archivo1.txt"), 1)
+        # Debe haber 3 archivos: meta.json, subdir_a_archivo1.txt y subdir_b_archivo1.txt
+        self.assertEqual(len(archivos_en_commit), 3, "No se guardaron ambos archivos.")
 
 
 class TestLineasBase(unittest.TestCase):
@@ -266,7 +266,7 @@ class TestLineasBase(unittest.TestCase):
 
 
 class TestComparacion(unittest.TestCase):
-    """Casos CP-01 al CP-05: diff y list-baselines."""
+    """Casos CP-01 al CP-06: diff y list-baselines."""
 
     def setUp(self):
         if os.path.exists(utils.SBAC_DIR):
@@ -333,6 +333,28 @@ class TestComparacion(unittest.TestCase):
             core.listar_lineas_base()
         except Exception as e:
             self.fail(f"listar_lineas_base() lanzó excepción: {e}")
+
+    # CP-06
+    def test_CP06_diff_entre_lineas_base(self):
+        """Diff usando nombres de líneas base en lugar de IDs de commit."""
+        core.inicializar_repositorio()
+
+        with open("archivo1.txt", "w") as f:
+            f.write("linea 1\n")
+        core.anadir_archivo("archivo1.txt")
+        core.crear_commit("commit 1")
+        core.crear_linea_base("v1.0") # Primera línea base
+
+        with open("archivo1.txt", "a") as f:
+            f.write("linea 2\n")
+        core.anadir_archivo("archivo1.txt")
+        core.crear_commit("commit 2")
+        core.crear_linea_base("v2.0") # Segunda línea base
+
+        try:
+            core.ver_diferencias("v1.0", "v2.0")
+        except Exception as e:
+            self.fail(f"ver_diferencias() crasheó al intentar comparar líneas base: {e}")
 
 
 class TestManejoErrores(unittest.TestCase):

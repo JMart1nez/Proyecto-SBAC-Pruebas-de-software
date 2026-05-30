@@ -49,7 +49,7 @@ def generar_id_version():
     Crea un identificador único basado en el Timestamp actual. 
     Esto garantiza que dos versiones no tengan el mismo nombre.
     """
-    return "v" + str(int(time.time()))
+    return "v" + str(int(time.time() * 1000))
 
 def obtener_fecha_actual():
     """Retorna la fecha y hora actual en formato legible (YYYY-MM-DD HH:MM:SS)."""
