@@ -4,7 +4,7 @@
 El **Sistema Básico de Administración de Configuración (SBAC)** es una herramienta de Interfaz de Línea de Comandos (CLI) desarrollada en Python. Su objetivo principal es demostrar y aplicar los conceptos fundamentales de la Administración de Configuración (AC) de software, ofreciendo un entorno controlado, directo y educativo que elimina las complejidades inherentes a sistemas de control de versiones comerciales más grandes (como Git).
 
 ## Integrantes del Equipo Rojo
-El proyecto fue desarrollado de forma colaborativa siguiendo buenas prácticas de ingeniería de software, contando con los siguientes roles fundamentales:
+El proyecto fue desarrollado de forma colaborativa siguiendo buenas prácticas de ingeniería de software:
 
 * **Martínez Leal José María** 
 * **Matú Hernández Diana** 
