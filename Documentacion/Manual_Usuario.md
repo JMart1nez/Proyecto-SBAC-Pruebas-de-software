@@ -92,3 +92,29 @@ Si eres un usuario nuevo, sigue este flujo básico para crear tu primera versió
    ```bash
    python sbac.py history
    ```
+
+---
+
+## 5. Solución de Problemas Frecuentes (FAQ / Troubleshooting)
+
+Durante el ciclo de desarrollo y pruebas de SBAC, identificamos y solucionamos varios incidentes. Si experimentas comportamientos inesperados, consulta esta guía:
+
+> **Problema:** Ejecuto un comando como `sbac status` y mi sistema de integración continua reporta un fallo, o el script se detiene.
+> **Solución (INC-004):** Asegúrate de haber ejecutado `sbac init` primero. SBAC ahora devuelve un código de error de sistema (`Exit Code 1`) si intentas operar fuera de un repositorio inicializado, para evitar corrupción de datos.
+
+> **Problema:** Tenía dos archivos con el mismo nombre en diferentes carpetas (ej. `src/main.py` y `test/main.py`), los añadí al mismo tiempo, ¿se van a sobrescribir en el historial?
+> **Solución (INC-001):** No. SBAC sanitiza las rutas internamente reemplazando las barras por guiones bajos (ej. `src_main.py`). Tus archivos están seguros y se restaurarán en sus carpetas correctas al usar `checkout`.
+
+> **Problema:** Hice un script automatizado que lanza muchos `commits` por segundo y falló.
+> **Solución (INC-002):** Este comportamiento fue parcheado. SBAC ahora genera IDs de versión con precisión de milisegundos, por lo que puedes ejecutar commits concurrentes sin provocar colisiones de tiempo.
+
+> **Problema:** Al hacer `diff` entre dos versiones, el sistema crashea si en la versión 2 eliminé un archivo que existía en la versión 1.
+> **Solución (INC-003):** Esto ha sido resuelto. El comando `diff` ahora reporta elegantemente los archivos que fueron `[+] Añadidos` o `[-] Eliminados` antes de intentar comparar el contenido interno de los archivos.
+
+> **Problema:** Hice `checkout` a una versión anterior, pero en mi carpeta aún veo archivos nuevos que creé después de esa versión ("Estado Sucio").
+> **Solución (INC-005):** Actualiza tu versión de SBAC. En la última versión estable, el comando `checkout` primero limpia rigurosamente el entorno eliminando archivos de la versión actual antes de restaurar los de la versión objetivo.
+
+> **Problema:** Hice un commit modificando solo el `archivo B`, pero al hacer `checkout`, el `archivo A` del commit anterior desapareció.
+> **Solución (INC-006):** Este error arquitectónico está corregido. Ahora, cada nuevo commit "hereda" y arrastra consigo los archivos de la versión inmediatamente anterior, manteniendo tu proyecto completo.
+
+
