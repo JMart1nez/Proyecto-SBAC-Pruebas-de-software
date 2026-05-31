@@ -72,4 +72,4 @@ SBAC soporta 9 comandos fundamentales para la administración de la configuraci�
 ## Calidad y Estándares
 Este proyecto fue diseñado con un fuerte énfasis en el Aseguramiento de Calidad (QA) y el rigor metodológico:
 * **Estándar IEEE 829:** Toda la documentación del ciclo de pruebas (PlandePruebasMaestro, DiseñoPruebasIniciales, ProcedimientosPruebas, ReporteResumenPruebas, Reporte_Incidentes) se rige bajo los formatos estructurados de la norma IEEE 829.
-* **Norma ISO/IEC 25010:** La implementación del código y las pruebas garantizan que el software cumpla con atributos y subcaracterísticas de calidad, priorizando fuertemente la **Adecuación Funcional**, la **Mantenibilidad** y la **Confiabilidad** del sistema.
+* **Norma ISO 25010:** La implementación del código y las pruebas garantizan que el software cumpla con atributos y subcaracterísticas de calidad, priorizando fuertemente la **Adecuación Funcional**, la **Mantenibilidad** y la **Confiabilidad** del sistema.
