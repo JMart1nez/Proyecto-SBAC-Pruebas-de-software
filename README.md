@@ -12,7 +12,7 @@ El proyecto fue desarrollado de forma colaborativa siguiendo buenas prácticas d
 * **Sánchez Cruz Norma Selene** 
 * **Sánchez Pavia Angel Gabriel** 
 
-## ⚙️ Requisitos Previos
+## Requisitos Previos
 Para poder utilizar SBAC, asegúrate de contar con lo siguiente en tu entorno de desarrollo:
 * **Python 3** (versión 3.x o superior) instalado en tu sistema.
 * Acceso a una **Terminal**.
