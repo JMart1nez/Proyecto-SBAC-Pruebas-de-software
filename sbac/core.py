@@ -3,6 +3,7 @@ import shutil
 import difflib
 import utils
 import sys
+import json
 
 def validar_repositorio(func):
     """Decorador para asegurar que el repositorio esté inicializado antes de operar."""
@@ -45,13 +46,64 @@ def anadir_archivo(archivo):
 
 @validar_repositorio
 def mostrar_estado():
-    """Compara qué archivos están en el index listos para guardarse."""
+    """Compara los archivos en disco con el Index y el último commit para dar un estado real."""
     index = utils.leer_json(utils.INDEX_FILE, [])
-    print("Estado actual del repositorio:")
-    if not index:
-        print("  No hay archivos nuevos pendientes de commit.")
-    for file in index:
-        print(f"  [Pendiente] {file}")
+    
+    archivos_en_head = []
+    head_commit = utils.leer_texto(utils.HEAD_FILE)
+    
+    if head_commit:
+        ruta_commit = os.path.join(utils.COMMITS_DIR, head_commit)
+        if os.path.exists(ruta_commit):
+            for raiz, dirs, archivos in os.walk(ruta_commit):
+                for archivo in archivos:
+                    # Obtenemos la ruta relativa interna del archivo en el commit
+                    ruta_completa = os.path.join(raiz, archivo)
+                    ruta_relativa = os.path.relpath(ruta_completa, ruta_commit).replace("\\", "/")
+                    # Evitamos meter archivos de control internos si los hubiera
+                    archivos_en_head.append(ruta_relativa)
+
+    archivos_en_disco = []
+    for raiz, dirs, archivos in os.walk("."):
+        if ".sbac" in raiz or "__pycache__" in raiz or ".git" in raiz:
+            continue
+        for archivo in archivos:
+            ruta_completa = os.path.join(raiz, archivo)
+            ruta_relativa = os.path.relpath(ruta_completa, ".").replace("\\", "/")
+            archivos_en_disco.append(ruta_relativa)
+
+    no_rastreados = []
+    for f in archivos_en_disco:
+        if f in ["sbac.py", "core.py", "utils.py", "Dockerfile", "test_sbac.py"]:
+            continue
+        if f not in index and f not in archivos_en_head:
+            no_rastreados.append(f)
+
+    if head_commit:
+        print(f"Versión actual (HEAD): {head_commit}")
+    else:
+        print("Versión actual: Ninguna (Repositorio inicializado)")
+    print("==============================")
+
+    if index:
+        print("Archivos listos para el próximo commit (Staging):")
+        for file in index:
+            print(f"  [+] {file}")
+    else:
+        print("No hay cambios guardados.")
+        print("  (Usa 'python sbac.py add <archivo>' para agregarlos)")
+        
+    print("==============================")
+
+    if no_rastreados:
+        print("Archivos no rastreados (Untracked files):")
+        print("  (No se incluirán en el commit a menos que uses 'sbac add')")
+        for file in no_rastreados:
+            print(f"  [-] {file}")
+    else:
+        print("No hay archivos nuevos sin rastrear.")
+        
+    print("==============================")
 
 @validar_repositorio
 def crear_commit(mensaje):
